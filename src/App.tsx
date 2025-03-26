@@ -1,12 +1,15 @@
-import { Circle, LayerGroup, LayersControl, MapContainer, TileLayer } from "react-leaflet";
+import L from "leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import usePosition from "./hooks/usePosition";
 import "leaflet/dist/leaflet.css";
 import iconMarker from "leaflet/dist/images/marker-icon.png";
 import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import MapWrapper from "./components/MapWraper";
-import L from "leaflet";
 import Header from "./components/Header";
+import GroupLayer from "./components/GroupLayer";
+import Toolbar from "./components/Toolbar";
+
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: iconRetina,
   iconUrl: iconMarker,
@@ -15,9 +18,8 @@ L.Icon.Default.mergeOptions({
 
 const App = () => {
   
-  const position = usePosition();
+  const position = usePosition()
   window.history.replaceState(null, '', `?lat=${position.lat}&lng=${position.lng}&zoom=${position.zoom}`)
-  const center: [number, number] = [51.505, -0.09]
 
   return (
     <div style={{ height: '100vh', width: '99vw'}}>
@@ -31,27 +33,12 @@ const App = () => {
           style={{ minHeight: "95vh", minWidth: "100vw", position: 'absolute', bottom: 0 }}
         >
           <MapWrapper>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-            <LayersControl position="topright">
-              <LayersControl.Overlay checked name="Layer group with circles">
-                <LayerGroup>
-                  <Circle
-                    center={center}
-                    pathOptions={{ fillColor: 'blue' }}
-                    radius={200}
-                  />
-                  <Circle
-                    center={center}
-                    pathOptions={{ fillColor: 'red' }}
-                    radius={100}
-                    stroke={false}
-                  />
-                </LayerGroup>
-              </LayersControl.Overlay>
-            </LayersControl>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <GroupLayer />
+            <Toolbar />
           </MapWrapper>
         </MapContainer>
       </div>
