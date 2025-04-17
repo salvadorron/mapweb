@@ -2,15 +2,16 @@ import { useState } from 'react';
 import { CiSearch } from 'react-icons/ci'
 import { useMap } from 'react-leaflet';
 import './SearchLocation.css';
+import PopupSearch, { Option } from './PopupSearch';
 
 export default function SearchLocation() {
     
-    const [options, setOptions] = useState<{ label: string, value: { lat: number, lng: number } }[]>([]);
+    const [options, setOptions] = useState<Option[]>([]);
 
     const map = useMap();
 
     const onAction = async (payload: FormData) => {
-        const currentOptions: { label: string, value: { lat: number, lng: number } }[] = [];
+        const currentOptions: Option[] = [];
         const searchPayload = payload.get('search');
         const searchValue = searchPayload ? encodeURI(searchPayload.toString()) : '';
         const url = `https://nominatim.openstreetmap.org/search?q=${searchValue}&format=geojson`
@@ -27,17 +28,16 @@ export default function SearchLocation() {
             })
         })
 
-        if(currentOptions.length > 0) {
-            map.flyTo([currentOptions[0].value.lat, currentOptions[0].value.lng], 15);
-        }
-
         setOptions(currentOptions);
     }
 
-    const handleFly = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-        const { lat, lng } = JSON.parse(evt.target.value);
+    const handleFly = (option: Option) => {
+        const { lat, lng } = option.value;
         map.flyTo([lat, lng], 15);
+        setOptions([]);
     }
+
+    
 
 
     return (
@@ -49,11 +49,9 @@ export default function SearchLocation() {
                 </div>
                 <button type="submit">Buscar</button>
             </form>
-            {options.length > 0 && <select className='query-selector'  onChange={handleFly}>
-                {options.map((option) => (
-                    <option key={option.label} value={JSON.stringify(option.value)}>{option.label}</option>
-                ))}
-            </select>}
+            {options.length > 0 && 
+                <PopupSearch onChange={handleFly} options={options} />
+            }
         </div>
     )
 }
