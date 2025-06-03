@@ -1,9 +1,14 @@
 export default function Header () {
     return (
-        <div style={{ display: 'flex', gap: '1rem', position: 'fixed', padding: '4px', top: 0, height: 50, zIndex: 1000, background: '#000', width: '100%'}}>
-                <p style={{ color: '#fff' }}>Lat: {10}</p>
-                <p style={{ color: '#fff' }}>Lng: {30}</p>
-                <p style={{ color: '#fff' }}>Zoom: {20}</p>
+        <div style={{ 
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        padding: '10px',
+        textAlign: 'center',
+        borderBottom: '1px solid #eee',
+        }}>
+                {/* <p>Lat: {10}</p> */}
+                {/* <p>Lng: {30}</p> */}
+                <button>Iniciar Sessión</button>
             </div>
     )
 } 

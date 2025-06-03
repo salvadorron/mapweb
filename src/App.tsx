@@ -24,15 +24,15 @@ const App = () => {
   window.history.replaceState(null, '', `?lat=${position.lat}&lng=${position.lng}&zoom=${position.zoom}`)
 
   return (
-    <div style={{ height: '100vh', width: '99vw'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100%'}}>
       <Header />
-      <div style={{ position: 'relative', height: '100%', width: '100%'}}>
+      <div style={{flex: 1, width: '100%'}}>
         <MapContainer
           center={[position.lat, position.lng]}
           zoom={position.zoom}
           scrollWheelZoom={true}
           zoomControl={false}
-          style={{ minHeight: "95vh", minWidth: "100vw", position: 'absolute', bottom: 0 }}
+          style={{ height: '100%', width: '100%' }}
         >
           <SearchLocation />
           <MapWrapper>
@@ -44,7 +44,7 @@ const App = () => {
 
           </MapWrapper>
         </MapContainer>
-      </div>
+        </div>
     </div>
   );
 };
